@@ -1,0 +1,107 @@
+<div class="grid-container">
+    <div class="row">
+        <mat-card>
+            <mat-card-content>
+                <form [formGroup]="purchaseForm" (ngSubmit)="onSubmit()">
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Product quntity</mat-label>
+                        <input matInput formControlName="quantity" id="quantity" type="tel">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Product price</mat-label>
+                        <input matInput formControlName="price" id="price">
+                    </mat-form-field>
+
+
+                    <div formGroupName="supplierForm" class="select">
+                        <mat-form-field>
+                            <mat-label>Supplier name</mat-label>
+                            <mat-select formControlName="id">
+                                <mat-option *ngFor="let supplier of suppliers" [value]="supplier.id">
+                                    {{supplier.fullName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div formGroupName="productForm" class="select">
+                        <mat-form-field>
+                            <mat-label>Product name</mat-label>
+                            <mat-select formControlName="id">
+                                <mat-option *ngFor="let product of products" [value]="product.id">
+                                    {{product.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <button mat-flat-button color="accent" type="submit"
+                        [disabled]="!purchaseForm.valid">Purchase now</button>
+                </form>
+
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource">
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="position">
+                <th mat-header-cell *matHeaderCellDef> No. </th>
+                <td mat-cell *matCellDef="let element"> {{ element.id }} </td>
+            </ng-container>
+            <!-- Weight Column -->
+            <ng-container matColumnDef="supplierName">
+                <th mat-header-cell *matHeaderCellDef> Supplier name </th>
+                <td mat-cell *matCellDef="let element"> {{element.supplier.fullName}} </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="productName">
+                <th mat-header-cell *matHeaderCellDef> Product name </th>
+                <td mat-cell *matCellDef="let element"> {{element.product.name}} </td>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="quantity">
+                <th mat-header-cell *matHeaderCellDef> Quantity </th>
+                <td mat-cell *matCellDef="let element"> {{element.quantity}} </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="price">
+                <th mat-header-cell *matHeaderCellDef> Price </th>
+                <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="amount">
+                <th mat-header-cell *matHeaderCellDef> Amount </th>
+                <td mat-cell *matCellDef="let element"> {{element.amount}} </td>
+            </ng-container>
+
+
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="orderAt">
+                <th mat-header-cell *matHeaderCellDef> Purchase at </th>
+                <td mat-cell *matCellDef="let element"> {{element.orderAt}} </td>
+            </ng-container>
+            <!-- <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef> Action </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-flat-button color="primary" (click)="onEdit(element.id)"><mat-icon>edit</mat-icon>Edit</button>&nbsp;
+            <button mat-flat-button color="warn" (click)="onDelete(element.id)"> <mat-icon>delete</mat-icon> Delet</button>
+          </td>
+        </ng-container> -->
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+            aria-label="Select page of periodic elements">
+        </mat-paginator>
+    </div>
+
+</div>

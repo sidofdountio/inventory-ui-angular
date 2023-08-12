@@ -1,0 +1,33 @@
+<h1 mat-dialog-title>Adding product.</h1>
+<div mat-dialog-content [formGroup]="supplierToAdd">
+    <p>
+        <mat-form-field appearance="outline">
+            <mat-label>Full name</mat-label>
+            <input matInput formControlName="fullName">
+            <mat-hint>Enter product name</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" type="email">
+        </mat-form-field>
+
+    </p>
+
+    <p>
+        <mat-form-field appearance="outline">
+            <mat-label>Phone</mat-label>
+            <input matInput formControlName="phone" type="tel">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Address</mat-label>
+            <input matInput formControlName="address">
+        </mat-form-field>
+    </p>
+</div>
+<div mat-dialog-actions>
+    <button mat-raised-button color="warn" (click)="close()">Cancel</button>
+    <button mat-raised-button [disabled]="!supplierToAdd.valid" cdkFocusInitial color="primary"
+        (click)="onSaveSupplier()">Save</button>
+</div>

@@ -1,0 +1,18 @@
+.grid-container {
+    margin: 20px;
+}
+table{
+    width: 100%;
+}
+
+.row{
+    grid-row: 1 / span  2;
+    width: 100%;
+    margin: auto;
+    padding: 10px;
+}
+
+.container{
+    margin: auto;
+    padding: auto;
+}
