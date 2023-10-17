@@ -10,6 +10,8 @@ import { Customer } from 'src/app/appInterface/Customer';
   styleUrls: ['./customer.component.css']
 })
 export class CustomerComponent implements OnInit,AfterViewInit{
+
+  
 onAddCustomer() {
 throw new Error('Method not implemented.');
 }

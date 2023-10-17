@@ -1,6 +1,8 @@
-import { Component, OnInit,Inject } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit, Inject, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AppService } from 'src/app/app-service';
 import { Product } from 'src/app/appInterface/Product';
 
 @Component({
@@ -8,39 +10,45 @@ import { Product } from 'src/app/appInterface/Product';
   templateUrl: './add-product.component.html',
   styleUrls: ['./add-product.component.css']
 })
-export class AddProductComponent implements OnInit{
-productToSave!: FormGroup;
-id!:number;
-name:string;
-description:string;
-price:number;
-code:string;
+export class AddProductComponent implements OnInit, AfterViewInit {
+  productToSave!: FormGroup;
+  id!: number;
+  name: string;
+  description: string;
+  price: number;
+  code: string;
 
-constructor(@Inject(MAT_DIALOG_DATA) public data: Product,public dialogRef:MatDialogRef<AddProductComponent>, private formBuild: FormBuilder) {
-  this.id = data.id;
-  this.price = data.price;
-  this.name = data.name;
-  this.description = data.description;
-  this.code = data.code;
-}
+  constructor(@Inject(MAT_DIALOG_DATA) public data: Product,
+    public dialogRef: MatDialogRef<AddProductComponent>,
+    private formBuild: FormBuilder) {
+    this.id = data.id;
+    this.price = data.price;
+    this.name = data.name;
+    this.description = data.description;
+    this.code = data.code;
+  }
+  ngAfterViewInit(): void {
+    
+  }
 
-ngOnInit(): void {
-  this.productToSave = this.formBuild.group({
-    id: [this.id, []],
-    name: [this.name, Validators.required],
-    price: [this.price, Validators.required],
-    code: [this.code, Validators.required],
-    description: [this.description, Validators.required], 
-  });
-}
+  ngOnInit(): void {
+    this.productToSave = this.formBuild.group({
+      id: [this.id, []],
+      name: [this.name, Validators.required],
+      price: [this.price, Validators.required],
+      code: [this.code, Validators.required],
+      description: [this.description, Validators.required],
+    });
+    
+  }
 
-onClose() {
-  this.dialogRef.close();
-}
-onSaveProduct() {
-  this.dialogRef.close(this.productToSave.value);
+  onClose() {
+    this.dialogRef.close();
+  }
+  onSaveProduct() {
+    this.dialogRef.close(this.productToSave.value);
+    
+  }
 
-}
 
- 
 }

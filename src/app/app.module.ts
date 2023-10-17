@@ -39,6 +39,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatSelectModule } from '@angular/material/select';
 import { UpdateProductComponent } from './home/product/update-product/update-product.component';
+import { AdminComponent } from './admim/admin/admin.component';
+import { PageNotFoundComponent } from './home/page-not-found/page-not-found.component';
 
 
 
@@ -60,7 +62,9 @@ import { UpdateProductComponent } from './home/product/update-product/update-pro
     StockChartComponent,
     StatisticComponent,
     InventoryComponent,
-    UpdateProductComponent
+    UpdateProductComponent,
+    AdminComponent,
+    PageNotFoundComponent
   ],
   imports: [
 
