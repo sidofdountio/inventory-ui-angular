@@ -50,6 +50,12 @@ export class AppService {
       )
   }
 
+  public addProduct(product:Product):Observable<Product>{
+    return this.http.post<Product>(`${this.URL}/addProduct`,product)
+    .pipe(
+      tap(console.log)
+    );
+  }
 
 
   public getCustomer(): Observable<Customer[]> {

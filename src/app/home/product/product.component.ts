@@ -17,13 +17,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class ProductComponent implements AfterViewInit, OnInit {
 
-
-
   productToCheck = new BehaviorSubject<Product[]>([]);
-
-
   products: Product[] = []
-
   productById!: Product;
   productToSave!: Product;
 
@@ -33,21 +28,16 @@ export class ProductComponent implements AfterViewInit, OnInit {
   price!: number;
   code!: string;
 
-
-
   displayedColumns: string[] = ['position', 'name', 'code', 'price', 'action'];
   dataSource = new MatTableDataSource<Product>(this.products);
 
   constructor(private dialog: MatDialog, private appService: AppService) { }
 
   ngOnInit(): void {
-
     this.onGetProduct();
-
   }
 
   onAddProduct() {
-
     const configDialog = new MatDialogConfig();
     configDialog.autoFocus = true;
     configDialog.disableClose = true;
@@ -60,10 +50,13 @@ export class ProductComponent implements AfterViewInit, OnInit {
       .subscribe(
         (productToAdd) => {
           this.addProduct(productToAdd);
+        },
+        () => {
+          alert("Error due save product");
+          console.log("Error due save product");
         })
 
   }
-
 
 
   onEdit(id: number) {
@@ -71,7 +64,6 @@ export class ProductComponent implements AfterViewInit, OnInit {
       if (this.productToCheck.value[index].id === id) {
         this.productById = this.productToCheck.value[index];
       }
-
     }
     const configDialog = new MatDialogConfig();
     configDialog.autoFocus = true;
@@ -101,12 +93,20 @@ export class ProductComponent implements AfterViewInit, OnInit {
   }
 
   addProduct(prodtuctToAdd: Product) {
+    this.appService.addProduct(prodtuctToAdd)
+      .subscribe(
+        (response: Product) => {
+          alert("Product added ...")
+          this.onGetProduct();
+        },
+        (error: HttpErrorResponse) => {
+          alert("Error:" + error.message)
+        }
+      )
   }
 
   onDelete(id: number) {
   }
-
-
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;

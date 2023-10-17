@@ -7,10 +7,15 @@ import { SupplierComponent } from './home/supplier/supplier.component';
 import { PurchaseComponent } from './home/purchase/purchase.component';
 import { InventoryComponent } from './home/inventory/inventory.component';
 import { SaleComponent } from './home/sale/sale.component';
+import { PageNotFoundComponent } from './home/page-not-found/page-not-found.component';
 
 const routes: Routes = [
   {
-    path:"",
+    path: "",
+    component: HomeComponent
+  },
+  {
+    path:"admin",
     component: HomeComponent
   },
   {
@@ -40,6 +45,10 @@ const routes: Routes = [
   {
     path: "inventory",
     component: InventoryComponent
+  },
+  {
+    path: '**',
+    component: PageNotFoundComponent
   }
 ];
 
