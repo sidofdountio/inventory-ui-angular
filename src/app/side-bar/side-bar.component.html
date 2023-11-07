@@ -1,32 +1,44 @@
+<script src="https://kit.fontawesome.com/9b8d013cc3.js" crossorigin="anonymous"></script>
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="(isHandset$ | async) === false">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item routerLink="/admin"><mat-icon>home</mat-icon>Home </a>
-      <a mat-list-item routerLink="/product"><mat-icon>redeem</mat-icon>Product</a>
-      <a mat-list-item routerLink="/supplier"><mat-icon>apartment</mat-icon>Supplier</a>
-      <a mat-list-item routerLink="/customer"><mat-icon>person</mat-icon>Customer</a>
-      <a mat-list-item routerLink="/purchase"><mat-icon>payments</mat-icon>Purchase</a>
-      <a mat-list-item routerLink="/sale"><mat-icon>store</mat-icon>Sale</a>
-      <a mat-list-item routerLink="/inventory"><mat-icon>inventory_2</mat-icon>Invenrory</a>
+      <a mat-list-item routerLink="/admin">
+        <mat-icon matListItemIcon class="icon">home</mat-icon>Home
+      </a>
+      <a mat-list-item routerLink="/product" routerLinkActive="active"><mat-icon
+          matListItemIcon>redeem</mat-icon>Product</a>
+      <a mat-list-item routerLink="/supplier" routerLinkActive="active"><mat-icon
+          matListItemIcon>apartment</mat-icon>Supplier</a>
+      <a mat-list-item routerLink="/customers" routerLinkActive="active"><mat-icon
+          matListItemIcon>person</mat-icon>Customer</a>
+      <a mat-list-item routerLink="/purchase" routerLinkActive="active"><mat-icon
+          matListItemIcon>payments</mat-icon>Purchase</a>
+      <a mat-list-item routerLink="/sale" routerLinkActive="active"><mat-icon matListItemIcon>sell</mat-icon>Sale</a>
+      <a mat-list-item routerLink="/inventory" routerLinkActive="active"><mat-icon matListItemIcon>playlist_add_check</mat-icon>Invenrory</a>
+      <a mat-list-item routerLink="/invoice" routerLinkActive="active"><mat-icon
+          matListItemIcon>receipt_long</mat-icon>Invoice</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-    <mat-toolbar color="primary">
-      <button
-        type="button"
-        aria-label="Toggle sidenav"
-        mat-icon-button
-        (click)="drawer.toggle()"
+    <mat-toolbar color="">
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>inventory</span>
+      <span class="text-uppercase fw-bold text-primary">Inventory</span>
+      <div class="spacer"></div>
+      <p>
+        sidof <mat-icon color="accent">verified</mat-icon>
+        <button mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>person</mat-icon></button>
+      </p>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item routerLink="/login" routerLinkActive="active">Sing in</button>
+        <button mat-menu-item routerLink="/logout" routerLinkActive="active">Logout</button>
+      </mat-menu>
     </mat-toolbar>
     <!-- Add Content Here -->
-  <router-outlet></router-outlet>
+    <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

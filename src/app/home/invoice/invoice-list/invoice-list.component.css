@@ -1,0 +1,14 @@
+.grid-container{
+    margin-left: 20px;
+}
+.badge-success{
+    color: rgb(7, 165, 41);
+}
+
+.badge-danger{
+    background-color: #ffd740;
+    font-weight: 500;
+}
+.badge-warn{
+    color: #f44336;
+}

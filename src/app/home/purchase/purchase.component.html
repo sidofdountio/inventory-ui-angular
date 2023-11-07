@@ -1,42 +1,48 @@
 <div class="grid-container">
     <div class="row">
+        <h3>Iventory/Purcharse</h3>
         <mat-card>
             <mat-card-content>
-                <form [formGroup]="purchaseForm" (ngSubmit)="onSubmit()">
-
-                    <mat-form-field appearance="outline">
-                        <mat-label>Product quntity</mat-label>
-                        <input matInput formControlName="quantity" id="quantity" type="tel">
-                    </mat-form-field>
-
-                    <mat-form-field appearance="outline">
-                        <mat-label>Product price</mat-label>
-                        <input matInput formControlName="price" id="price">
-                    </mat-form-field>
-
+                <form [formGroup]="purchaseForm" (ngSubmit)="onSubmit()" class="form">
 
                     <div formGroupName="supplierForm" class="select">
-                        <mat-form-field>
+                        <mat-form-field appearance="outline">
                             <mat-label>Supplier name</mat-label>
-                            <mat-select formControlName="id">
-                                <mat-option *ngFor="let supplier of suppliers" [value]="supplier.id">
+                            <mat-select formControlName="id" >
+                                <mat-option *ngFor="let supplier of suppliers" [value]="supplier.id" >
                                     {{supplier.fullName}}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
                     <div formGroupName="productForm" class="select">
-                        <mat-form-field>
+                        <mat-form-field appearance="outline">
                             <mat-label>Product name</mat-label>
-                            <mat-select formControlName="id">
+                            <mat-select formControlName="id" (ngModelChange)="automatePriceDetected($event)">
                                 <mat-option *ngFor="let product of products" [value]="product.id">
                                     {{product.name}}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
-                    <button mat-flat-button color="accent" type="submit"
-                        [disabled]="!purchaseForm.valid">Purchase now</button>
+
+                    <p>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Product quantity</mat-label>
+                            <input matInput formControlName="quantity" id="quantity" >
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Product price</mat-label>
+                            <input matInput formControlName="price" id="price" [(ngModel)] ="priceDetectedById " 
+                            [disabled]="isDisabled" >
+                        </mat-form-field>
+                    </p>
+
+                    <button mat-flat-button color="accent" type="submit" [disabled]="!purchaseForm.valid">
+                        <mat-icon>add</mat-icon>
+                        Purchase Now
+                    </button>
                 </form>
 
             </mat-card-content>
@@ -71,13 +77,13 @@
             <!-- Symbol Column -->
             <ng-container matColumnDef="price">
                 <th mat-header-cell *matHeaderCellDef> Price </th>
-                <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.price | number:'2.2-3' | currency }} </td>
             </ng-container>
 
             <!-- Weight Column -->
             <ng-container matColumnDef="amount">
                 <th mat-header-cell *matHeaderCellDef> Amount </th>
-                <td mat-cell *matCellDef="let element"> {{element.amount}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.amount  | currency }} </td>
             </ng-container>
 
 
@@ -85,7 +91,7 @@
             <!-- Weight Column -->
             <ng-container matColumnDef="orderAt">
                 <th mat-header-cell *matHeaderCellDef> Purchase at </th>
-                <td mat-cell *matCellDef="let element"> {{element.orderAt}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.orderAt | date :'short' }} </td>
             </ng-container>
             <!-- <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef> Action </th>

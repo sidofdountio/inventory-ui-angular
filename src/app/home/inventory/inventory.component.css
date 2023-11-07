@@ -4,4 +4,14 @@
 table {
     width: 100%;
 }
-  
+
+.badge-danger{
+    color: coral;
+    /* background-color: coral; */
+}
+
+.badge-success{
+    color: green;
+    font-weight: 800;
+    /* background-color: green; */
+}

@@ -1,8 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
-import { Purchase } from '../appInterface/Purchase';
-import { Chart } from 'chart.js/auto';
+import { Purchase } from '../model/Purchase';
+import { AppService } from '../service/app-service';
+import { SnackBarService } from '../service/snack-bar.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { SaleAndPurcharse } from '../model/sale-and-purcharse';
+import { Sale } from '../model/Sale';
+import { StockData } from '../model/stock-chat-data';
+import { Inventory } from '../model/Inventory';
 
 @Component({
   selector: 'app-home',
@@ -31,9 +37,57 @@ export class HomeComponent implements OnInit {
     })
   );
 
-  purchase: Purchase[] = [];
-  constructor(private breakpointObserver: BreakpointObserver) { }
+  purchases: Purchase[] = [];
+  public totalData: SaleAndPurcharse={};
+  public stockData:Inventory[]=[];
+ 
+  constructor(private breakpointObserver: BreakpointObserver,
+    private appService: AppService,
+    private snackbarService: SnackBarService) { };
+    
   ngOnInit(): void {
+    this.appService.getPurchase().subscribe(
+      (response: Purchase[]) => {
+        this.purchases = response;
+        this.totalData.totalPurchse = this.purchases.length;
+        this.snackbarService.openSnackBar("Content Loaded","close");
+      },
+      (error: HttpErrorResponse) => {
+        console.log("error :  %s",error.status);
+        this.snackbarService.openSnackBar("An error occured","close");
+      }
+    );
+
+    this.appService.getSales().subscribe(
+      (response: Sale[]) => {
+        this.totalData.totalSale = response.length;
+      },
+      (error: HttpErrorResponse) => {
+        console.log("error :  %s",error.status);
+        this.snackbarService.openSnackBar("An error occured","close");
+      }
+    );
+
+    this.appService.getCustomer().subscribe(
+      (response) => {
+        this.totalData.totalCustomer = response.length;
+      },
+      (error: HttpErrorResponse) => {
+        console.log("error :  %s",error.status);
+        this.snackbarService.openSnackBar("An error occured","close");
+      }
+    );
+
+    this.appService.getSuppliers().subscribe(
+      (response) => {
+        this.totalData.totalCustomer = response.length;
+      },
+      (error: HttpErrorResponse) => {
+        console.log("error :  %s",error.status);
+        this.snackbarService.openSnackBar("An error occured","close");
+      }
+    );
+
     
   }
 

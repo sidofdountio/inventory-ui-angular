@@ -8,6 +8,9 @@
     margin: auto;
 }
 
+.form{
+    border: 1px solid #eee;
+}
 .container{
     margin: auto;
     padding: auto;

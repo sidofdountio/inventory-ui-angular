@@ -1,13 +1,14 @@
-import { AfterViewInit, Component, OnInit, ViewChild, Inject } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, Inject, OnDestroy } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { Product } from 'src/app/appInterface/Product';
-import { MatDialog, MAT_DIALOG_DATA, MatDialogRef, MatDialogConfig } from '@angular/material/dialog';
-import { AppService } from 'src/app/app-service';
+import { Product } from 'src/app/model/Product';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { AppService } from 'src/app/service/app-service';
 import { BehaviorSubject } from 'rxjs';
 import { AddProductComponent } from './add-product/add-product.component';
 import { UpdateProductComponent } from './update-product/update-product.component';
 import { HttpErrorResponse } from '@angular/common/http';
+import { SnackBarService } from 'src/app/service/snack-bar.service';
 
 
 @Component({
@@ -15,7 +16,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.css']
 })
-export class ProductComponent implements AfterViewInit, OnInit {
+export class ProductComponent implements AfterViewInit, OnInit ,OnDestroy{
 
   productToCheck = new BehaviorSubject<Product[]>([]);
   products: Product[] = []
@@ -31,12 +32,14 @@ export class ProductComponent implements AfterViewInit, OnInit {
   displayedColumns: string[] = ['position', 'name', 'code', 'price', 'action'];
   dataSource = new MatTableDataSource<Product>(this.products);
 
-  constructor(private dialog: MatDialog, private appService: AppService) { }
+
+  constructor(private dialog: MatDialog, private appService: AppService, private snackbarService: SnackBarService) { }
 
   ngOnInit(): void {
     this.onGetProduct();
   }
 
+  // on add product: open modal send data. config modale.
   onAddProduct() {
     const configDialog = new MatDialogConfig();
     configDialog.autoFocus = true;
@@ -52,24 +55,25 @@ export class ProductComponent implements AfterViewInit, OnInit {
           this.addProduct(productToAdd);
         },
         () => {
-          alert("Error due save product");
           console.log("Error due save product");
         })
 
   }
 
-
+  // Edite product
   onEdit(id: number) {
     for (let index = 0; index < this.productToCheck.value.length; index++) {
       if (this.productToCheck.value[index].id === id) {
         this.productById = this.productToCheck.value[index];
       }
     }
+    // matDialog confi
     const configDialog = new MatDialogConfig();
     configDialog.autoFocus = true;
     configDialog.disableClose = true;
     configDialog.data = this.productById;
 
+    // passing matDialogue and config to open 
     const dialogRef = this.dialog.open(UpdateProductComponent, configDialog);
     dialogRef.afterClosed()
       .subscribe(
@@ -77,39 +81,71 @@ export class ProductComponent implements AfterViewInit, OnInit {
           this.onUpdate(productToUpdate);
         })
   }
+
+  // Get products
   onGetProduct(): void {
     this.appService.getProducts().subscribe(
       (response: Product[]) => {
         this.dataSource.data = response;
         this.productToCheck.next(response);
+        this.snackbarService.openSnackBar("Product Loaded", "close");
       },
       (error: HttpErrorResponse) => {
-        alert("ERROR " + error.message);
+        this.snackbarService.openSnackBar("An error occured", "close")
+        console.log("Error code : %s", error.message);
       }
     )
   }
 
+  // edite product: Method that run api and be called.->
   onUpdate(prodtuctToUpdate: Product) {
-  }
-
-  addProduct(prodtuctToAdd: Product) {
-    this.appService.addProduct(prodtuctToAdd)
+    this.appService.editeProduct(prodtuctToUpdate)
       .subscribe(
-        (response: Product) => {
-          alert("Product added ...")
+        () => {
+          this.snackbarService.openSnackBar("Product edited successfuly", "close");
           this.onGetProduct();
         },
         (error: HttpErrorResponse) => {
-          alert("Error:" + error.message)
+          console.log("Error: %s", error.status);
+          this.snackbarService.openSnackBar("And error occured", "close");
         }
       )
   }
 
-  onDelete(id: number) {
+  // add product: Method that run api and be called.->
+  addProduct(prodtuctToAdd: Product) {
+    this.appService.addProduct(prodtuctToAdd)
+      .subscribe(
+        (response: Product) => {
+          this.snackbarService.openSnackBar("Product added successfuly", "close");
+          this.onGetProduct();
+        },
+        (error: HttpErrorResponse) => {
+          this.snackbarService.openSnackBar("Error due save product", "close");
+          console.log("Error code : %s", error.status);
+        }
+      )
   }
+
+  // Delete
+  onDelete(id: number) {
+    confirm("Do you wand to delete this product.");
+  }
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+  }
+
+  ngOnDestroy(): void {
+    this.addProduct;
+    this.onUpdate;
+    this.onGetProduct;
+    this.onAddProduct
+    this.onEdit;
+    this.onDelete
+
+
   }
 
 }

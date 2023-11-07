@@ -18,6 +18,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {MatBadgeModule} from '@angular/material/badge';
+
 import {MatDialogModule} from '@angular/material/dialog';
 import { AppRoutingModule } from './app-routing.module';
 import { ProductComponent } from './home/product/product.component';
@@ -35,13 +37,19 @@ import { StockChartComponent } from './home/stock-chart/stock-chart.component';
 import { StatisticComponent } from './home/statistic/statistic.component';
 import { InventoryComponent } from './home/inventory/inventory.component'; 
 import { MatTable, MatTableModule } from '@angular/material/table';
+import {MatAutocompleteModule} from '@angular/material/autocomplete'; 
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatSelectModule } from '@angular/material/select';
 import { UpdateProductComponent } from './home/product/update-product/update-product.component';
-import { AdminComponent } from './admim/admin/admin.component';
 import { PageNotFoundComponent } from './home/page-not-found/page-not-found.component';
-
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { AddSaleComponent } from './home/sale/add-sale/add-sale.component';
+import { InvoiceSaleComponent } from './home/invoice/invoice-sale/invoice-sale.component';
+import { SpinerComponent } from './spiner/spiner.component';
+import { ErrorComponent } from './error/error.component';
+import { InvoiceListComponent } from './home/invoice/invoice-list/invoice-list.component';
+import { DataTablesModule } from 'angular-datatables';
 
 
 @NgModule({
@@ -63,17 +71,28 @@ import { PageNotFoundComponent } from './home/page-not-found/page-not-found.comp
     StatisticComponent,
     InventoryComponent,
     UpdateProductComponent,
-    AdminComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    AddSaleComponent,
+    InvoiceSaleComponent,
+    SpinerComponent,
+    ErrorComponent,
+    InvoiceListComponent
   ],
   imports: [
-
     BrowserModule,
+    DataTablesModule,
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
+    MatBadgeModule,
+    MatProgressSpinnerModule,
     HttpClientModule,
+    MatSelectModule,
+    MatInputModule,
+    MatFormFieldModule,
     LayoutModule,
+    MatAutocompleteModule,
+    MatSnackBarModule,
     MatToolbarModule,
     MatButtonModule,
     MatSidenavModule,
@@ -82,17 +101,13 @@ import { PageNotFoundComponent } from './home/page-not-found/page-not-found.comp
     MatGridListModule,
     MatCardModule,
     MatMenuModule,
-    MatFormFieldModule,
     MatDialogModule,
-    MatInputModule,
     AppRoutingModule,
     MatProgressSpinnerModule,
     MatListModule,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatSelectModule,
-    
     ],
   providers: [],
   bootstrap: [AppComponent]

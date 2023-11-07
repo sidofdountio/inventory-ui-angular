@@ -1,0 +1,81 @@
+<button class="btn btn-primary" type="button" disabled>
+  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+  Loading...
+</button>
+
+map(
+response => {
+this.snackBar.openSnackBar("Invoice display","X");
+return { dataState: DataState.LOADED_STATE, appData: response }
+}
+),
+startWith({ dataState: DataState.LOADIND_STATE }),
+catchError((error: string) => {
+this.snackBar.openSnackBar("error","close");
+return of({ dataState: DataState.ERROR_STATE, error });
+})
+)
+
+
+, never,
+{
+dtOptions: {
+alias: "dtOptions"; required: false;
+};
+dtTrigger: { alias: "dtTrigger";
+required: false; };
+}, {}, never, never, false, never>;
+
+
+this.appSate$ = this.route.paramMap.pipe(
+
+switchMap((params: ParamMap) =>
+this.appservice.invoiceSaleBySaleId$(params.get('saleId')!)
+.pipe(
+tap(
+(data) => {
+this.state = DataState.LOADED_STATE;
+},
+() => {
+this.state = DataState.ERROR_STATE;
+},
+() => {
+this.state = DataState.LOADED_STATE;
+}
+
+))
+))
+
+
+this.appSate$ = this.route.paramMap.pipe(
+switchMap((params: ParamMap) =>
+this.appservice.invoiceSaleBySaleId$(params.get('saleId')!)
+.pipe(
+tap(
+(data) => {
+// this.state = DataState.LOADED_STATE;
+},
+() => {
+this.state = DataState.ERROR_STATE;
+},
+() => {
+this.state = DataState.LOADED_STATE;
+}
+
+))
+)).subscribe(
+(response: InvoiceSale[]) => {
+// Assuming that `response` is the received invoice sale object
+this.appSate$ = of(response);
+},
+(error: any) => {
+
+}
+);
+
+
+id: this.saleForm.value.productForm?.productId,
+name: this.productName.value,
+description: '',
+price: 0,
+code: ''

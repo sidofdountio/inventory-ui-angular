@@ -1,27 +1,60 @@
-<div class="row">
-    <div class="container">
-        <mat-card style="background-color: #007bff;border-color: #007bff;">
-            <mat-card-content >
-                <mat-card-header><mat-icon>rder_approve</mat-icon> Daly purchase</mat-card-header>
-                <mat-card-header>{{ 0 }}</mat-card-header>
+<div class="row mb-3">
+    <div class="col-sm-4">
+        <mat-card >
+            <mat-card-content>
+                <mat-card-header>Purchase</mat-card-header>
+                <mat-card-header>{{ totalData.totalPurchse }}</mat-card-header>
             </mat-card-content>
-            <mat-card-footer>{{ "12/22/8"|date }}</mat-card-footer>
-        </mat-card>
-
-        <mat-card style="background-color: #00a65a;">
-            <mat-card-content >
-                <mat-card-header><mat-icon>request_page</mat-icon> Daly sale</mat-card-header>
-                <mat-card-header>{{ 0 }}</mat-card-header>
-            </mat-card-content>
-            <mat-card-footer>{{ "12/22/8"|date }}</mat-card-footer>
-        </mat-card>
-
-        <mat-card style="background-color: #f56954;">
-            <mat-card-content >
-                <mat-card-header><mat-icon>point_of_sale</mat-icon> Daly amount</mat-card-header>
-                <mat-card-header>{{ 0 }}</mat-card-header>
-            </mat-card-content>
-            <mat-card-footer>{{ "12/22/8"|date }}</mat-card-footer>
+            <mat-card-footer>{{ currentDate |date }}</mat-card-footer>
         </mat-card>
     </div>
+    <div class="col-sm-4">
+        <mat-card>
+            <mat-card-content>
+                <mat-card-header>Sale</mat-card-header>
+                <mat-card-header>{{ totalData.totalSale }}</mat-card-header>
+            </mat-card-content>
+            <mat-card-footer>{{ currentDate |date }}</mat-card-footer>
+        </mat-card>
+    </div>
+    <div class="col-sm-4">
+        <mat-card >
+            <mat-card-content>
+                <mat-card-header>Amount</mat-card-header>
+                <mat-card-header>{{ 0 }}</mat-card-header>
+            </mat-card-content>
+            <mat-card-footer>{{ currentDate | date }}</mat-card-footer>
+        </mat-card>
+    </div>
+</div>
+<!--  -->
+<div class="row">
+    <div class="col-sm-4">
+        <mat-card >
+            <mat-card-content>
+                <mat-card-header>Customer</mat-card-header>
+                <mat-card-header>{{ totalData.totalCustomer }}</mat-card-header>
+            </mat-card-content>
+            <mat-card-footer>{{ currentDate |date }}</mat-card-footer>
+        </mat-card>
+    </div>
+    <div class="col-sm-4">
+        <mat-card>
+            <mat-card-content>
+                <mat-card-header>Supplier</mat-card-header>
+                <mat-card-header>{{ totalData.totalCustomer }}</mat-card-header>
+            </mat-card-content>
+            <mat-card-footer>{{ currentDate |date }}</mat-card-footer>
+        </mat-card>
+    </div>
+    <div class="col-sm-4">
+        <mat-card >
+            <mat-card-content>
+                <mat-card-header>Beer rack</mat-card-header>
+                <mat-card-header>{{ 0 }}</mat-card-header>
+            </mat-card-content>
+            <mat-card-footer>{{ currentDate | date }}</mat-card-footer>
+        </mat-card>
+    </div>
+
 </div>
