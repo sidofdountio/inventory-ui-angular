@@ -8,12 +8,13 @@ import { Chart } from 'chart.js/auto';
   styleUrls: ['./purchase-chart.component.css']
 })
 export class PurchaseChartComponent implements OnInit{
-  colorName: string[] = ['Red', 'Blue', 'Yellow'];
-  data: number[] = [300, 50, 100];
+
+  productName: string[] = [];
+  data: number[] = [];
 
   private constructor(){}
   ngOnInit(): void {
-    purchaseChart(this.colorName,this.data);
+    purchaseChart(this.productName,this.data);
   }
  
 

@@ -17,3 +17,7 @@ table{
     margin: auto;
     padding: auto;
 }
+
+mat-form-field{
+    margin: 2px;
+}

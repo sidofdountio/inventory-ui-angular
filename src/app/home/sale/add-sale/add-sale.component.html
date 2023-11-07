@@ -1,0 +1,66 @@
+<div class="row">
+    <mat-card>
+        <mat-card-content>
+            <form [formGroup]="saleForm" (ngSubmit)="onSubmit()" class="form">
+                <!-- todo: use mat-auto-complete insted of mat-select -->
+                <div formGroupName="customerForm" class="select">
+                    <mat-form-field appearance="outline">
+                        <mat-label>customer name</mat-label>
+                        <mat-select formControlName="customerId">
+                            <mat-option *ngFor="let customer of customers" [value]="customer.id">
+                                {{customer.fullName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <!-- todo: use mat-auto-complete insted of mat-select -->
+                <div formGroupName="productForm" class="select">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Product name</mat-label>
+                        <mat-select formControlName="productId" (ngModelChange)="automatePriceDetected($event)">
+                            <mat-option *ngFor="let product of products" [value]="product.id">
+                                {{product.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Product quntity</mat-label>
+                        <input matInput formControlName="quantity" id="quantity">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Product price</mat-label>
+                        <input matInput formControlName="price" id="price" [(ngModel)]="priceDetectedById">
+                    </mat-form-field>
+                </p>
+                <div class="col-6">
+                    <button mat-flat-button color="accent" type="button" [disabled]="!saleForm.valid" class="me-2" 
+                        (click)="addProductToSale()" *ngIf="!(isLoading$ | async)" >
+                        <mat-icon>add</mat-icon>
+                        Sale
+                    </button>
+
+                    <button mat-flat-button color="primary" type="submit" 
+                    [disabled]="!saleForm.valid || (isLoading$ | async) || item === 0" class="me-4"
+                    matBadge="{{ item }}" matBadgePosition="after" matBadgeColor="primary">Sale now</button>
+
+                    <button class="btn btn-primary" type="button" disabled *ngIf="(isLoading$ | async)">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Loading...
+                    </button>
+
+                    <button mat-flat-button color="warn" type="button" [disabled]="!saleForm.valid" class="me-2" 
+                        (click)="clear()" *ngIf="!(isLoading$ | async)" >
+                        <mat-icon></mat-icon>
+                        Cancel
+                    </button>
+
+                </div>
+            </form>
+
+        </mat-card-content>
+    </mat-card>
+</div>

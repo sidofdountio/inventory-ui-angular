@@ -1,22 +1,21 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, Inject, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AppService } from 'src/app/app-service';
-import { Product } from 'src/app/appInterface/Product';
+import { Product } from 'src/app/model/Product';
 
 @Component({
   selector: 'app-add-product',
   templateUrl: './add-product.component.html',
   styleUrls: ['./add-product.component.css']
 })
-export class AddProductComponent implements OnInit, AfterViewInit {
+export class AddProductComponent implements OnInit{
   productToSave!: FormGroup;
   id!: number;
   name: string;
   description: string;
   price: number;
   code: string;
+  iddesable: boolean = true;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: Product,
     public dialogRef: MatDialogRef<AddProductComponent>,
@@ -26,9 +25,6 @@ export class AddProductComponent implements OnInit, AfterViewInit {
     this.name = data.name;
     this.description = data.description;
     this.code = data.code;
-  }
-  ngAfterViewInit(): void {
-    
   }
 
   ngOnInit(): void {
@@ -47,7 +43,6 @@ export class AddProductComponent implements OnInit, AfterViewInit {
   }
   onSaveProduct() {
     this.dialogRef.close(this.productToSave.value);
-    
   }
 
 

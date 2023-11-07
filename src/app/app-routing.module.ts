@@ -8,6 +8,8 @@ import { PurchaseComponent } from './home/purchase/purchase.component';
 import { InventoryComponent } from './home/inventory/inventory.component';
 import { SaleComponent } from './home/sale/sale.component';
 import { PageNotFoundComponent } from './home/page-not-found/page-not-found.component';
+import { InvoiceSaleComponent } from './home/invoice/invoice-sale/invoice-sale.component';
+import { InvoiceListComponent } from './home/invoice/invoice-list/invoice-list.component';
 
 const routes: Routes = [
   {
@@ -17,10 +19,6 @@ const routes: Routes = [
   {
     path:"admin",
     component: HomeComponent
-  },
-  {
-    path: "customer",
-    component: CustomerComponent
   },
   {
     path: "product",
@@ -39,16 +37,31 @@ const routes: Routes = [
     component: SaleComponent
   },
   {
-    path: "customer",
+    path: "customers",
     component: CustomerComponent
   },
   {
     path: "inventory",
     component: InventoryComponent
   },
+  {                                                                                                                                                                                                                                                                                                                               
+    path: "invoice",
+    component: InvoiceListComponent
+  },
+  {                                                                                                                                                                                                                                                                                                                               
+    path: "invoice/:saleId",
+    component: InvoiceSaleComponent
+  },
+
+  {
+    path: "page-not-found",
+    component: PageNotFoundComponent
+  },
+
   {
     path: '**',
-    component: PageNotFoundComponent
+    redirectTo: '/page-not-found',
+    title:"Page-not-found"
   }
 ];
 

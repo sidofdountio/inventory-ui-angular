@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Product } from 'src/app/appInterface/Product';
+import { Product } from 'src/app/model/Product';
 
 @Component({
   selector: 'app-update-product',

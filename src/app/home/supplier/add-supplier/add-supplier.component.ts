@@ -1,7 +1,7 @@
 import { Component, OnInit,Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Supplier } from 'src/app/appInterface/Supplier';
+import { Supplier } from 'src/app/model/Supplier';
 @Component({
   selector: 'app-add-supplier',
   templateUrl: './add-supplier.component.html',
@@ -27,7 +27,7 @@ export class AddSupplierComponent implements OnInit{
     this.supplierToAdd = this.formBuild.group({
       id:[this.id,[]],
       fullName:[this.fullName,Validators.required],
-      email:[this.email,Validators.required],
+      email:[this.email,[Validators.email,Validators.required]],
       address:[this.address,Validators.required],
       phone:[this.phone,Validators.required]
     })
