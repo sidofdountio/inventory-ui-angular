@@ -1,8 +1,23 @@
-.grid-container{
+.grid-container {
     margin: 20px;
 }
-table{
-    width: 100%;
+
+.badge-success {
+    color: white;
+    background-color: rgb(13, 102, 32);
 }
 
+.badge-danger {
+    color: white;
+    background-color: #f44336;
+    font-weight: 500;
+}
 
+.badge-warn {
+    color: white;
+    background-color: #f44336;
+}
+
+table {
+    width: 100%;
+}

@@ -19,12 +19,17 @@ export class AddSaleComponent implements OnInit, OnDestroy {
   
   @Output() public childEvent = new EventEmitter();
   products!: Product[];
-  priceDetectedById: number | string = 0;
+  priceDetectedById!: any;
+  price!: number;
   productsById = new BehaviorSubject<Product[]>([]);
   inventories = new BehaviorSubject<Inventory[]>([]);
   productName = new BehaviorSubject<string>('');
   // isLoading = new BehaviorSubject<boolean>(false);
   @Input()public isLoading$!:Observable<boolean>;
+  quantity:any;
+  listOfProducToSale$ = new BehaviorSubject<Sale[]>([]);
+  ProducToSale: Sale [] = [];
+  item: number = 0;
   customers: Customer[] = [];
   sales: Sale[] = [];
   saleForm = this.fb.group({
@@ -68,12 +73,10 @@ export class AddSaleComponent implements OnInit, OnDestroy {
       price: 0,
       code: ''
     },
-    quantity: this.saleForm.value.quantity
+    quantity: this.saleForm.value.quantity,
+    amount: 0
   };
-  
-  listOfProducToSale$ = new BehaviorSubject< Sale []>([]);
-  listOfProducToSale: Sale [] = [];
-  item: number = 0;
+ 
   
   
   constructor(private appService: AppService, private fb: FormBuilder, private snackBar: SnackBarService) { }
@@ -82,12 +85,14 @@ export class AddSaleComponent implements OnInit, OnDestroy {
     this.appService.getCustomer().subscribe(
       (response) => {
         this.customers = response;
+        this.snackBar.openSnackBar("Customer Loaded","X");
       }
     );
     this.appService.getProducts().subscribe(
       (response) => {
         this, this.products = response;
         this.productsById.next(response);
+        this.snackBar.openSnackBar("Product Loaded","X");
       }
     );
   }
@@ -98,6 +103,7 @@ export class AddSaleComponent implements OnInit, OnDestroy {
       if (iterator.id === productSelected) {
         this.productName.next(iterator.name);
         this.priceDetectedById = iterator.price.toPrecision(5);
+        this.snackBar.openSnackBar("Price Loaded","X");
       }
     }
    
@@ -109,6 +115,7 @@ export class AddSaleComponent implements OnInit, OnDestroy {
         this.productName.next(product.name);
       }
     }
+    this.quantity = this.saleForm.value.quantity;
     this.saleToSave = {
       customer: {
         id: this.saleForm.value.customerForm?.customerId,
@@ -122,36 +129,38 @@ export class AddSaleComponent implements OnInit, OnDestroy {
         id: this.saleForm.value.productForm?.productId,
         name: this.productName.value,
         description: '',
-        price: 0,
+        price: this.priceDetectedById,
         code: ''
       },
       quantity: this.saleForm.value.quantity,
+      status: Status.INPROGRESS,
+      price: this.priceDetectedById,
+      amount: Math.imul(this.quantity as number,this.priceDetectedById)
     };
-    this.listOfProducToSale.push(this.saleToSave);
-    this.listOfProducToSale$.next(this.listOfProducToSale);
+
+    this.ProducToSale.push(this.saleToSave);
+    // this.listOfProducToSale$.next(this.listOfProducToSale);
     // count to display the item numbers
-    this.item = this.listOfProducToSale.length;
-    console.log(this.listOfProducToSale$.value);
-   
+    this.item = this.ProducToSale.length;
+    this.snackBar.openSnackBar("Product added to the cart","X");
   }
   
   // send data to the parent component.
   onSubmit() {
     // emit the event to the parent component.
-    
-    this.childEvent.emit(this.listOfProducToSale$.value);
-    this.listOfProducToSale$.next([]);
-    this.reset();
-    this.item=0;
+    this.childEvent.emit(this.ProducToSale);
+    this.clear()
   }
   
   reset() {
+    this.item=0;
     this.saleForm.reset();
   }
   clear() {
+    this.ProducToSale.splice(0);
     this.item = 0;
-    this.listOfProducToSale$.next([]);
     this.saleForm.reset();
+    this.snackBar.openSnackBar("Cart cleaned","X");
   }
 
 
@@ -161,6 +170,7 @@ export class AddSaleComponent implements OnInit, OnDestroy {
     this.productName.unsubscribe();
     this.productsById.unsubscribe();
     this.inventories.unsubscribe();
+    this.childEvent.unsubscribe();
     
   }
 }

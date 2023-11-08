@@ -7,7 +7,6 @@ import { SnackBarService } from '../service/snack-bar.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SaleAndPurcharse } from '../model/sale-and-purcharse';
 import { Sale } from '../model/Sale';
-import { StockData } from '../model/stock-chat-data';
 import { Inventory } from '../model/Inventory';
 
 @Component({
@@ -38,7 +37,14 @@ export class HomeComponent implements OnInit {
   );
 
   purchases: Purchase[] = [];
-  public totalData: SaleAndPurcharse={};
+  public totalData: SaleAndPurcharse={
+    totalSale: 0,
+    totalPurchse: 0,
+    totalCustomer: 0,
+    totalSupplier: 0,
+    totalbeerRac: 0,
+    totalSaleNumber:0
+  };
   public stockData:Inventory[]=[];
  
   constructor(private breakpointObserver: BreakpointObserver,
@@ -60,7 +66,10 @@ export class HomeComponent implements OnInit {
 
     this.appService.getSales().subscribe(
       (response: Sale[]) => {
-        this.totalData.totalSale = response.length;
+        for (let sale of response){
+          this.totalData.totalSale += sale.amount;
+        }
+        this.totalData.totalSaleNumber = response.length;
       },
       (error: HttpErrorResponse) => {
         console.log("error :  %s",error.status);
@@ -80,7 +89,7 @@ export class HomeComponent implements OnInit {
 
     this.appService.getSuppliers().subscribe(
       (response) => {
-        this.totalData.totalCustomer = response.length;
+        this.totalData.totalSupplier = response.length;
       },
       (error: HttpErrorResponse) => {
         console.log("error :  %s",error.status);

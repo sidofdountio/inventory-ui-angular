@@ -52,9 +52,9 @@
                         Loading...
                     </button>
 
-                    <button mat-flat-button color="warn" type="button" [disabled]="!saleForm.valid" class="me-2" 
+                    <button mat-flat-button color="warn" type="button"  class="me-2" 
                         (click)="clear()" *ngIf="!(isLoading$ | async)" >
-                        <mat-icon></mat-icon>
+                        <mat-icon>clear_all</mat-icon>
                         Cancel
                     </button>
 

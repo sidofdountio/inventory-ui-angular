@@ -6,26 +6,22 @@
         <mat-card-header>
           <mat-card-title>
             {{card.title}}
-           
+
           </mat-card-title>
         </mat-card-header>
         <mat-card-content class="dashboard-card-content">
           <div *ngIf="(card.title === 'Recent transaction')">
             <div class="row">
-              <div class="col-12">
-                <mat-list>
-                  <div mat-subheader>Recent transaction</div>
-                  <div *ngIf="purchases.length == 0" class="text-primary">Not yet purcharsing</div>
-                  <div *ngIf="purchases.length > 0">
-                    <mat-list-item *ngFor="let purchase of purchases" class="recent-list">
-                      <mat-icon matListItemIcon>backup</mat-icon>
-                      <div matListItemTitle>{{purchase.product.name}}</div>
-                      <div matListItemLine>{{purchase.orderAt| date}}</div>
-                      <mat-divider></mat-divider>
-                    </mat-list-item>
-                  </div>
+              <div class="col-md-12">
 
-                </mat-list>
+                <div *ngIf="purchases.length == 0" class="text-primary">Not yet purcharsing</div>
+                <div *ngIf="purchases.length > 0">
+                  <div >
+                    <ul *ngFor="let purchase of purchases">
+                      <li>{{purchase.product.name}} <span>{{purchase.orderAt}}</span></li>
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

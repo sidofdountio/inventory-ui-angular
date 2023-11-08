@@ -11,33 +11,33 @@ import { SnackBarService } from 'src/app/service/snack-bar.service';
   templateUrl: './customer.component.html',
   styleUrls: ['./customer.component.css']
 })
-export class CustomerComponent implements OnInit,AfterViewInit,OnDestroy{
+export class CustomerComponent implements OnInit, AfterViewInit, OnDestroy {
 
-// form build to generate customer json object.
+  // form build to generate customer json object.
   customerForm = this.fb.group({
-    fullName: ["",[Validators.required]],
-    email: ["",[Validators.required]], 
-    phone: ["",[Validators.required]], 
-    address: ["",[Validators.required]],
-    nationalIdCard: ["",[Validators.required]]
+    fullName: ["", [Validators.required]],
+    email: ["", [Validators.required]],
+    phone: ["", [Validators.required]],
+    address: ["", [Validators.required]],
+    nationalIdCard: ["", [Validators.required]]
   })
 
-  
-  customers:Customer[]=[];
-  
-  displayedColumns: string[] = ['position', 'fullName', 'email', 'address', 'phone','idCard','action'];
+
+  customers: Customer[] = [];
+
+  displayedColumns: string[] = ['position', 'fullName', 'email', 'address', 'phone', 'idCard', 'action'];
   dataSource = new MatTableDataSource<Customer>(this.customers);
 
-  constructor(private appService:AppService, private fb: FormBuilder,private snackBar: SnackBarService){}
+  constructor(private appService: AppService, private fb: FormBuilder, private snackBar: SnackBarService) { }
 
   ngOnInit(): void {
     this.onGetCustomer();
   }
-  
+
   // 
-  onGetCustomer() :void{
+  onGetCustomer(): void {
     this.appService.getCustomer().subscribe(
-      (response:Customer[]) =>{
+      (response: Customer[]) => {
         this.dataSource.data = response;
         this.snackBar.openSnackBar("customer successfuly Loaded", "close");
       },
@@ -49,35 +49,47 @@ export class CustomerComponent implements OnInit,AfterViewInit,OnDestroy{
 
   onSubmit() {
     this.appService.addCustomer(this.customerForm.value as Customer)
-    .subscribe
-     (
-       () => {
-         this.onGetCustomer();
-         this.snackBar.openSnackBar("customer successfuly saved", "close");
-         this.resetForm();
-     
-       },
-       (error: HttpErrorResponse) => {
-         this.snackBar.openSnackBar("error du saving", "close");
-         console.log("error : %s ", error.status);
-       }
-     );
+      .subscribe
+      (
+        () => {
+          this.onGetCustomer();
+          this.snackBar.openSnackBar("customer successfuly saved", "close");
+          this.resetForm();
+
+        },
+        (error: HttpErrorResponse) => {
+          this.snackBar.openSnackBar("error du saving", "close");
+          console.log("error : %s ", error.status);
+        }
+      );
   }
 
-  resetForm():void{
+  resetForm(): void {
     this.customerForm.reset();
   }
 
   onEdit(customerId: number) {
   }
   onDelete(customerId: any) {
-    
+    if (confirm("Do you wand to delete this Customer.")) {
+      this.appService.deleteCustomer$(customerId).subscribe
+        ((response) => {
+          if (response){
+            this.snackBar.openSnackBar("Deleted successfuly", "X");
+            this.onGetCustomer();
+          }
+        }),
+        () => {
+          this.snackBar.openSnackBar("Operation Failled", "X");
+        }
+    }
+
   }
 
-  @ViewChild(MatPaginator)paginator!:MatPaginator;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngAfterViewInit(): void {
-   this.dataSource.paginator = this.paginator;
+    this.dataSource.paginator = this.paginator;
   }
 
   ngOnDestroy(): void {

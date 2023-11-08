@@ -74,8 +74,11 @@ this.appSate$ = of(response);
 );
 
 
-id: this.saleForm.value.productForm?.productId,
-name: this.productName.value,
-description: '',
-price: 0,
-code: ''
+<tr>
+  <td>{{ invoice.id }} </td>
+  <td>{{ invoice.sale?.product?.name }}</td>
+  <td ><span [ngClass]="invoice.invoiceStatus === invoiceStatus.PAID ? 'badge-success' : 'badge-danger' ">{{ invoice.invoiceStatus }}</span></td>
+  <td>{{ invoice.date | date:'short' }}</td>
+  <td>{{ invoice?.sale?.amount | number }}</td>
+  <td><button mat-icon-button (click)="onViewInvoice(invoice.customer?.id)"><mat-icon>print</mat-icon></button></td>
+</tr>
