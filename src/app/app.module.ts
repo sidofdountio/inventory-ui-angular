@@ -49,7 +49,8 @@ import { InvoiceSaleComponent } from './home/invoice/invoice-sale/invoice-sale.c
 import { SpinerComponent } from './spiner/spiner.component';
 import { ErrorComponent } from './error/error.component';
 import { InvoiceListComponent } from './home/invoice/invoice-list/invoice-list.component';
-import { DataTablesModule } from 'angular-datatables';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'; 
 
 
 @NgModule({
@@ -80,10 +81,10 @@ import { DataTablesModule } from 'angular-datatables';
   ],
   imports: [
     BrowserModule,
-    DataTablesModule,
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
+    MatSlideToggleModule,
     MatBadgeModule,
     MatProgressSpinnerModule,
     HttpClientModule,
@@ -108,6 +109,7 @@ import { DataTablesModule } from 'angular-datatables';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
+    FontAwesomeModule,
     ],
   providers: [],
   bootstrap: [AppComponent]

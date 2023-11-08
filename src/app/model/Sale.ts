@@ -8,7 +8,7 @@ export interface Sale{
     product?:Product;
     quantity?:any;
     price?:number;
-    amount?:number;
-    orderAt?:string;
+    amount:number;
+    orderAt?:string | Date;
     status?:Status;
 }

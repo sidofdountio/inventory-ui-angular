@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { environment } from 'src/environment/environment';
+import { environment } from 'src/environments/environment.development';
 import { Inventory } from '../model/Inventory';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
@@ -15,7 +15,7 @@ import { InvoiceSale } from '../model/invoice-sale';
   providedIn: 'root'
 })
 export class AppService {
- 
+
 
   private readonly URL = environment.URL;
   constructor(private http: HttpClient) { }
@@ -72,7 +72,7 @@ export class AppService {
   }
 
   // add new sale
-  addSale(saleToAdd: Sale[]): Observable<Sale[]> {
+  addNewSale(saleToAdd: Sale[]): Observable<Sale[]> {
     return this.http.post<Sale[]>(`${this.URL}/addSale`, saleToAdd)
       .pipe(
         tap(console.log)
@@ -93,13 +93,7 @@ export class AppService {
         tap(console.log)
       );
   }
-  
-  addCustomer(customer: Customer): Observable<Customer> {
-    return this.http.post<Customer>(`${this.URL}/addCustomer`, customer)
-      .pipe(
-        tap(console.log)
-      );
-  }
+
 
 
   editeProduct(prodtuctToUpdate: Product) {
@@ -109,6 +103,13 @@ export class AppService {
       );
   }
 
+  // =====================CUSTOMER END-POIND=====================================
+  addCustomer(customer: Customer): Observable<Customer> {
+    return this.http.post<Customer>(`${this.URL}/addCustomer`, customer)
+      .pipe(
+        tap(console.log)
+      );
+  }
 
   public getCustomer(): Observable<Customer[]> {
     return this.http.get<Customer[]>(`${this.URL}/customers `)
@@ -117,9 +118,17 @@ export class AppService {
       )
   }
 
+  deleteCustomer$ = (customerId: number) => <Observable<boolean>>
+    this.http.delete<boolean>(`${this.URL}/customer/delete/${customerId}`)
+      .pipe(
+        tap(console.log),
+        catchError(this.handlerError)
+      );
+
+  // =====================CUSTOMER END-POIND=====================================
 
 
-  // invoice
+  //========================= Invoice ===========================================
   invoiceSales$ = <Observable<InvoiceSale[]>>
     this.http.get<InvoiceSale>(`${this.URL}/invoices`)
       .pipe(
@@ -134,14 +143,21 @@ export class AppService {
         catchError(this.handlerError)
       );
 
-  invoiceSaleBySaleId$ = (saleId: number | string ) => <Observable<InvoiceSale[]>>
+  invoiceSaleBySaleId$ = (saleId: number | string) => <Observable<InvoiceSale[]>>
     this.http.get<InvoiceSale>(`${this.URL}/invoice/${saleId}`)
       .pipe(
         tap(console.log),
         catchError(this.handlerError)
       );
 
-  // end invoice
+  invoiceSaleByCustomerId$ = (saleId: number | string) => <Observable<InvoiceSale>>
+    this.http.get<InvoiceSale>(`${this.URL}/invoice/customer/${saleId}`)
+      .pipe(
+        tap(console.log),
+        catchError(this.handlerError)
+      );
+
+  //============================= end invoice=====================================================
 
 
 

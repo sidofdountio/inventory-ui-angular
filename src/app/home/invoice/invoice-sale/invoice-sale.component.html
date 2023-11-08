@@ -9,13 +9,12 @@
         <app-error></app-error>
     </ng-container>
 
-    <ng-container *ngIf="(appSate$ | async ) as appSate">
-        <ng-container *ngFor="let invoice of appSate">
+        <ng-container *ngIf="appSate$ |async">
             <div class="container">
                 <div class="col-md-12">
                     <div class="invoice-company text-inverse f-w-600  mb-5">
                         <span class="pull-right hidden-print">
-                            <button mat-icon-button (click)="exportToPDF(invoice.invoiceNumber)"> <mat-icon>print</mat-icon></button>
+                            <button mat-icon-button (click)="exportToPDF(invoiceNumer)"> <mat-icon>print</mat-icon></button>
                         </span>
                     </div>
                     <div  id="invoice-contents" class="invoice">
@@ -40,18 +39,18 @@
                             <div class="invoice-to">
                                 <small>to</small>
                                 <address class="m-t-5 m-b-5">
-                                    <strong class="text-inverse">{{ invoice.sale?.customer?.email }}</strong><br>
-                                    Street {{ invoice.sale?.customer?.address }}<br>
+                                    <strong class="text-inverse">{{ customerEmail }}</strong><br>
+                                    Street {{ customerAddress }}<br>
                                     City, <br>
-                                    Phone: (237) {{ invoice.sale?.customer?.phone }}<br>
+                                    Phone: (237) {{ customerPhone }}<br>
                                     Fax:
                                 </address>
                             </div>
                             <div class="invoice-date">
-                                <small>Invoice / {{ invoice.date | date:'short' }}</small>
+                                <small>Invoice / {{ invoiceDate | date:'short' }}</small>
                                 <div class="date text-inverse m-t-5">date</div>
                                 <div class="invoice-detail">
-                                    {{ invoice.invoiceNumber }}<br>
+                                    {{ invoiceNumer }}<br>
                                     Services Product
                                 </div>
                             </div>
@@ -71,7 +70,7 @@
                                             <th class="text-right" width="20%">LINE TOTAL</th>
                                         </tr>
                                     </thead>
-                                    <tbody *ngFor="let invoiceSale of appSate">
+                                    <tbody *ngFor="let invoiceSale of appSate$ |async ">
                                         <tr>
                                             <td>{{ invoiceSale.invoiceNumber  }}</td>
                                             <td>
@@ -79,7 +78,7 @@
                                                     {{ invoiceSale.sale?.product?.name | uppercase }}</span><br>
                                             </td>
                                             <td class="text-center">{{ invoiceSale?.sale?.quantity }}</td>
-                                            <td class="text-center">{{ invoiceSale?.sale?.price | number | currency
+                                            <td class="text-center">{{ invoiceSale?.sale?.price | currency
                                                 }}</td>
                                             <td class="text-right">{{ invoiceSale.sale?.amount | currency }}</td>
                                         </tr>
@@ -95,19 +94,19 @@
                                     <div class="invoice-price-row">
                                         <div class="sub-price">
                                             <small>SUBTOTAL</small>
-                                            <span class="text-inverse">{{ invoice.subTotal | currency  }}</span>
+                                            <span class="text-inverse">{{ invoiceSubTotal | currency  }}</span>
                                         </div>
                                         <div class="sub-price">
                                             <i class="fa fa-plus text-muted"></i>
                                         </div>
                                         <div class="sub-price">
                                             <small>PAYPAL FEE (0.0%)</small>
-                                            <span class="text-inverse">{{ invoice.tax | currency }}</span>
+                                            <span class="text-inverse">{{ invoiceTax | currency }}</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="invoice-price-right">
-                                    <small>TOTAL</small> <span class="fw-bold">{{ invoice.total | currency }}</span>
+                                    <small>TOTAL</small> <span class="fw-bold">{{ invoiceTotal | currency }}</span>
                                 </div>
                             </div>
                             <!-- end invoice-price -->
@@ -138,6 +137,4 @@
                 </div>
             </div>
         </ng-container>
-
-    </ng-container>
 </div>

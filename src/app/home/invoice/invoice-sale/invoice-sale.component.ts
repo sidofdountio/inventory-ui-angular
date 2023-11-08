@@ -26,6 +26,14 @@ export class InvoiceSaleComponent implements OnInit, OnDestroy {
   dataSuject$ = new BehaviorSubject<InvoiceSale | null>(null);
   state: DataState = DataState.LOADING_STATE;
   // @ViewChild("invoiceContent") invoiceContent!: ElementRef;
+  invoiceNumer: any = 0;
+  customerEmail: any;
+  customerAddress: any;
+  invoiceDate!: string | Date;
+  invoiceSubTotal!: string | number;
+  invoiceTax!: string | number;
+  invoiceTotal!: string | number;
+  customerPhone: any;
 
 
   constructor(private appservice: AppService, private snackBar: SnackBarService,
@@ -41,12 +49,23 @@ export class InvoiceSaleComponent implements OnInit, OnDestroy {
           .pipe(
             tap(
               (data) => {
+                for (let iterator of data) {
+                  this.invoiceNumer = iterator.invoiceNumber;
+                  this.customerAddress = iterator.customer?.address;
+                  this.customerEmail = iterator.customer?.email;
+                  this.customerPhone = iterator.customer?.phone;
+                  this.invoiceDate = iterator.date;
+                  this.invoiceSubTotal = iterator.subTotal;
+                  this.invoiceTax = iterator.tax;
+                  this.invoiceTotal = iterator.total
+                }
                 this.state = DataState.LOADING_STATE;
               },
               () => {
                 this.state = DataState.ERROR_STATE;
               },
               () => {
+
                 this.state = DataState.LOADED_STATE;
               }
 
@@ -56,9 +75,9 @@ export class InvoiceSaleComponent implements OnInit, OnDestroy {
 
   }
 
-  exportToPDF(invoiceNumber:any) {
+  exportToPDF(invoiceNumber: any) {
     const button = document.getElementById('invoice-contents');
-    if ( button){
+    if (button) {
 
       html2canvas(button).then((canvas) => {
         const data = canvas.toDataURL();
@@ -70,7 +89,7 @@ export class InvoiceSaleComponent implements OnInit, OnDestroy {
             }
           ]
         };
-        pdfMake.createPdf(documentDefinition).download('invoice-'+invoiceNumber +'.pdf');
+        pdfMake.createPdf(documentDefinition).download('invoice-' + invoiceNumber + '.pdf');
       });
     }
   }

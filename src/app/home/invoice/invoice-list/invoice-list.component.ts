@@ -1,7 +1,8 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
-import {  Router } from '@angular/router';
-import { Observable, Subject, Subscription, of } from 'rxjs';
-import { catchError, map, startWith, tap } from 'rxjs/operators';
+import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { catchError, map, startWith } from 'rxjs/operators';
 import { AppState } from 'src/app/model/app-data';
 import { CustormResponse } from 'src/app/model/customer-response';
 import { DataState } from 'src/app/model/enum/data-state';
@@ -9,6 +10,7 @@ import { InvoiceStatus } from 'src/app/model/enum/invoice-status';
 import { InvoiceSale } from 'src/app/model/invoice-sale';
 import { AppService } from 'src/app/service/app-service';
 import { SnackBarService } from 'src/app/service/snack-bar.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-invoice-list',
@@ -16,19 +18,20 @@ import { SnackBarService } from 'src/app/service/snack-bar.service';
   styleUrls: ['./invoice-list.component.css']
 })
 export class InvoiceListComponent implements AfterViewInit, OnInit, OnDestroy {
-  invoiceSales!: InvoiceSale[];
+  // https://www.postman.com/sidofdountio
+  displayedColumns: string[] = ['invoiceNumber', 'name', 'status', 'date','action'];
+  ELEMENT_DATA!: InvoiceSale[];
+  dataSource = new MatTableDataSource<InvoiceSale>(this.ELEMENT_DATA);
   appSate$!: Observable<AppState<CustormResponse>>;
   readonly DataState = DataState;
-  private subscription!: Subscription;
-  dtOptions: any = {};
-  dtTrigger: Subject<any> = new Subject<any>();
-  readonly invoiceStatus =InvoiceStatus; 
+  readonly invoiceStatus = InvoiceStatus;
+  INVOICE_SALE_DATA: InvoiceSale[] = [];
 
-  // https://www.postman.com/sidofdountio
   constructor(private appService: AppService, private snackBar: SnackBarService,
     private router: Router, private renderer: Renderer2) { }
 
   ngOnInit(): void {
+
     this.appSate$ = this.appService.invoiceSale$.pipe(
       map(
         response => {
@@ -44,43 +47,51 @@ export class InvoiceListComponent implements AfterViewInit, OnInit, OnDestroy {
         return of({ dataState: DataState.ERROR_STATE, error });
       })
     );
-    // Subscribe to the observable and assign the subscription
-    // this.subscription = this.appSate$.subscribe();
+
     this.appService.invoiceSales$.subscribe(
       (data => {
-        this.invoiceSales = data;
-        this.dtOptions = {
-          
-         
-          // Configure the DataTables Buttons extension
-          dom: 'Bfrtip',
-          buttons: [
-            'print',
-            'excel',
-          ]
-        };
+        this.dataSource.data = data;
+        this.INVOICE_SALE_DATA  = data;
       })
     );
 
   }
 
-
+  ngAfterViewInit(): void {
+   
+  }
 
   onViewInvoice(saleId: any) {
     this.router.navigate(["/invoice", saleId]);
   }
 
-  ngAfterViewInit(): void {
-    this.renderer.listen('document', 'click', (event) => {
-      if (event.target.hasAttribute("view-person-id")) {
-        this.router.navigate(["/person", event.target.getAttribute("view-person-id")]);
-      }
-    });
+  generateExcelFile(): void {
+    // Create a workbook and worksheet
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.json_to_sheet(this.INVOICE_SALE_DATA);
+  
+    // Add the worksheet to the workbook
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+  
+    // Generate the Excel file
+    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    this.saveExcelFile(excelBuffer, new Date()+'invoice_sale_list.xlsx');
+  }
+  
+  saveExcelFile(buffer: any, fileName: string): void {
+    const data: Blob = new Blob([buffer], { type: 'application/octet-stream' });
+    const url: string = window.URL.createObjectURL(data);
+    const link: HTMLAnchorElement = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    link.click();
+    setTimeout(() => {
+      window.URL.revokeObjectURL(url);
+      link.remove();
+    }, 100);
   }
 
-
   ngOnDestroy(): void {
-    
   }
 
 
