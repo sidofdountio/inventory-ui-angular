@@ -51,6 +51,13 @@ export class PurchaseComponent implements OnInit, AfterViewInit, OnDestroy {
 
   purchaseForm = this.fb.group({
     id: [''],
+    quantity: ['', Validators.required],
+    price: ['',],
+    amount: [''],
+    orderAt: [''],
+    arrivesAt: [''],
+    isArrived: [''],
+    status: [Status.COMPLETE],
     supplierForm: this.fb.group(
       {
         id: ['', Validators.required],
@@ -67,13 +74,7 @@ export class PurchaseComponent implements OnInit, AfterViewInit, OnDestroy {
         description: [''],
         price: ['']
       }),
-    quantity: ['', Validators.required],
-    price: ['',],
-    amount: [''],
-    orderAt: [''],
-    arrivesAt: [''],
-    isArrived: [''],
-    status: [Status.COMPLETE]
+    
   });
 
   constructor(private appService: AppService,
@@ -103,6 +104,7 @@ export class PurchaseComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Get data from the form whit this method and submit it.
   onSubmit() {
+    
     const idOfSupplier = this.purchaseForm.value.supplierForm?.id;
     const idP = this.purchaseForm.value.productForm?.id;
     this.purchase = {

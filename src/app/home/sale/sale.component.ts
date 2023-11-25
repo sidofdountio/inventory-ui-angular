@@ -15,7 +15,6 @@ import { SnackBarService } from 'src/app/service/snack-bar.service';
 })
 export class SaleComponent implements OnInit, OnDestroy {
 
-
   public isLoading = new BehaviorSubject<boolean>(false);
   isLoading$ = this.isLoading.asObservable();
   readonly saleStatus = Status;
@@ -24,7 +23,7 @@ export class SaleComponent implements OnInit, OnDestroy {
   public saleList = new BehaviorSubject<Sale[]>([]);
   displayedColumns: string[] = ['position', 'fullName', 'name', 'quantity', 'price', 'amount', 'orderAt', 'status', 'action'];
   dataSource = new MatTableDataSource<Sale>(this.sales);
-  disabled: any;
+  disabled: boolean = true;
   constructor(private appService: AppService, private snackBar: SnackBarService, private router: Router) { }
 
   ngOnInit(): void {
@@ -50,7 +49,6 @@ export class SaleComponent implements OnInit, OnDestroy {
   }
 
   onEdit(arg0: any) {
-
   }
 
   onAddSale(sale: Sale[]) {
@@ -59,7 +57,7 @@ export class SaleComponent implements OnInit, OnDestroy {
     this.appService.addNewSale(sale).subscribe
       (
         () => {
-          this.snackBar.openSnackBar("seller successfuly saved", "close");
+          this.snackBar.openSnackBar("saller process successfuly", "close");
           this.onGetSale();
           this.isLoading.next(false);
         },

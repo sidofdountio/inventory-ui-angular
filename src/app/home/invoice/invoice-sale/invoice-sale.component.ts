@@ -20,12 +20,10 @@ import { SnackBarService } from 'src/app/service/snack-bar.service';
 })
 export class InvoiceSaleComponent implements OnInit, OnDestroy {
 
-
   appSate$!: Observable<InvoiceSale[]>;
-  readonly DataState = DataState;
   dataSuject$ = new BehaviorSubject<InvoiceSale | null>(null);
+  readonly DataState = DataState;
   state: DataState = DataState.LOADING_STATE;
-  // @ViewChild("invoiceContent") invoiceContent!: ElementRef;
   invoiceNumer: any = 0;
   customerEmail: any;
   customerAddress: any;
@@ -40,10 +38,7 @@ export class InvoiceSaleComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute, private router: Router,) { }
 
   ngOnInit(): void {
-
-
     this.appSate$ = this.route.paramMap.pipe(
-
       switchMap((params: ParamMap) =>
         this.appservice.invoiceSaleBySaleId$(params.get('saleId')!)
           .pipe(
@@ -68,7 +63,6 @@ export class InvoiceSaleComponent implements OnInit, OnDestroy {
 
                 this.state = DataState.LOADED_STATE;
               }
-
             ))
       ))
 
@@ -93,16 +87,6 @@ export class InvoiceSaleComponent implements OnInit, OnDestroy {
       });
     }
   }
-
-  // onInvoice(){
-  //   const id = this.route.snapshot.paramMap.get('id');
-  //   this.invoice$ = this.appservice.saleById$(id as unknown as number).pipe(
-  //     map( response =>{
-  //       return response;
-  //     })
-  //   )
-  // }
-
   ngOnDestroy(): void {
     this.appSate$
   }
@@ -110,8 +94,5 @@ export class InvoiceSaleComponent implements OnInit, OnDestroy {
 }
 
 function printTable() {
-
-
-
 }
 

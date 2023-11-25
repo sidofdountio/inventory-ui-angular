@@ -22,7 +22,6 @@ export class AddSaleComponent implements OnInit, OnDestroy {
   priceDetectedById!: any;
   price!: number;
   productsById = new BehaviorSubject<Product[]>([]);
-  inventories = new BehaviorSubject<Inventory[]>([]);
   productName = new BehaviorSubject<string>('');
   // isLoading = new BehaviorSubject<boolean>(false);
   @Input()public isLoading$!:Observable<boolean>;
@@ -77,8 +76,6 @@ export class AddSaleComponent implements OnInit, OnDestroy {
     amount: 0
   };
  
-  
-  
   constructor(private appService: AppService, private fb: FormBuilder, private snackBar: SnackBarService) { }
   
   ngOnInit(): void {
@@ -169,7 +166,7 @@ export class AddSaleComponent implements OnInit, OnDestroy {
     this.listOfProducToSale$.unsubscribe();
     this.productName.unsubscribe();
     this.productsById.unsubscribe();
-    this.inventories.unsubscribe();
+
     this.childEvent.unsubscribe();
     
   }

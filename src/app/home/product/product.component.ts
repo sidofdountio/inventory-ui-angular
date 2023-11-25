@@ -16,7 +16,7 @@ import { SnackBarService } from 'src/app/service/snack-bar.service';
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.css']
 })
-export class ProductComponent implements AfterViewInit, OnInit ,OnDestroy{
+export class ProductComponent implements AfterViewInit, OnInit, OnDestroy {
 
   productToCheck = new BehaviorSubject<Product[]>([]);
   products: Product[] = []
@@ -57,7 +57,6 @@ export class ProductComponent implements AfterViewInit, OnInit ,OnDestroy{
         () => {
           console.log("Error due save product");
         })
-
   }
 
   // Edite product

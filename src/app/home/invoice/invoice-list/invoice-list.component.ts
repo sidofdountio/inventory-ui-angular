@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
@@ -28,7 +28,7 @@ export class InvoiceListComponent implements AfterViewInit, OnInit, OnDestroy {
   INVOICE_SALE_DATA: InvoiceSale[] = [];
 
   constructor(private appService: AppService, private snackBar: SnackBarService,
-    private router: Router, private renderer: Renderer2) { }
+    private router: Router) { }
 
   ngOnInit(): void {
 

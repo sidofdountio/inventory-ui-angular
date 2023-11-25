@@ -17,7 +17,7 @@ export class InventoryComponent implements OnInit, AfterViewInit, OnDestroy {
   displayedColumns: string[] = ['up', 'date', 'label', 'productName', 'orldQuantity', 'orldPrice', 'orldAmount', 'newQuantity', 'newPrice', 'newAmount']
   dataSource = new MatTableDataSource<Inventory>(this.inventories);
   constructor(private appService: AppService, private snackbar: SnackBarService) { }
-  
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngOnInit(): void {
